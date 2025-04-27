@@ -22,10 +22,9 @@ const Navbar = ({ isLoggedIn }) => {
     <nav className="bg-white text-black shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          {/* Logo */}
+         
           <Link to="/" className="text-xl font-bold text-gray-700">BLOG</Link>
 
-          {/* Search bar */}
           <input
             type="text"
             value={searchTerm}
@@ -34,11 +33,10 @@ const Navbar = ({ isLoggedIn }) => {
             className="px-4 py-2 border rounded-md w-72 focus:outline-none focus:ring-2 focus:ring-cyan-400"
           />
 
-          {/* Navbar Links */}
           <div className="space-x-8 font-medium text-[17px]">
             {isLoggedIn ? (
               <>
-                {/* Dashboard Link */}
+         
                 <Link to="/dashboard" className="text-gray-700">Dashboard</Link>
 
                 {role === 'creator' && (

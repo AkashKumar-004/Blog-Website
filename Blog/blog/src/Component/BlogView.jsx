@@ -15,7 +15,7 @@ const BlogView = () => {
   const blogsPerPage = 6;
   const [isLoggedIn, setIsLoggedIn] = useState(false); 
   const [showLoginModal, setShowLoginModal] = useState(false);
-
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -33,7 +33,7 @@ const BlogView = () => {
       }
 
       try {
-        const res = await axios.get('http://localhost:5000/api/blogs', {
+        const res = await axios.get(`${API_URL}/api/blogs`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -64,7 +64,7 @@ const BlogView = () => {
     if (blogId) {
       const fetchRecommendations = async () => {
         try {
-          const res = await axios.get(`http://localhost:5000/api/blogs/recommendations?blogId=${blogId}`);
+          const res = await axios.get(`${API_URL}/api/blogs/recommendations?blogId=${blogId}`);
           setRecommendedBlogs(res.data);
         } catch (err) {
           setRecommendedBlogs([]);

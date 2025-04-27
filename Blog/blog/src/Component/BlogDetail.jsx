@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom'; // <-- Added useNavigate
+import { useParams, useNavigate } from 'react-router-dom'; 
 import { useSelector } from 'react-redux';
 
 const BlogDetail = () => {
   const { id } = useParams();
-  const navigate = useNavigate(); // <-- Added navigate
+  const navigate = useNavigate(); 
   const token = useSelector((state) => state.user.token);
   const [blog, setBlog] = useState(null);
   const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(false);
-
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const fetchBlog = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/blogs/${id}`);
+      const response = await axios.get(`${API_URL}/api/blogs/${id}`);
       setBlog(response.data);
       setLikes(response.data.likes.length);
 
@@ -28,7 +28,7 @@ const BlogDetail = () => {
     if (!token || liked) return;
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/blogs/${id}/like`,
+        `${API_URL}/api/blogs/${id}/like`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -55,7 +55,7 @@ const BlogDetail = () => {
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#0f0c29] via-[#302b63] to-[#24243e] flex justify-center items-center relative px-4">
 
-      {/* Return / Back Button */}
+     
       <div className="absolute top-6 left-6">
         <button
           onClick={() => navigate('/')}
@@ -65,7 +65,6 @@ const BlogDetail = () => {
         </button>
       </div>
 
-      {/* Blog Content */}
       <div className="max-w-3xl w-full bg-[#1e1e2f] p-10 rounded-2xl shadow-2xl animate-fadeIn">
         <h1 className="text-5xl font-extrabold text-center text-white mb-8 tracking-wide animate-fadeIn">{blog.title}</h1>
 

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 const Profile = () => {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const [user, setUser] = useState(null);
   const [formData, setFormData] = useState({
     username: '',
@@ -16,7 +17,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/profile', {
+        const response = await axios.get(`${API_URL}/api/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(response.data);
@@ -43,7 +44,7 @@ const Profile = () => {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put('http://localhost:5000/api/profile', formData, {
+      const response = await axios.put(`${API_URL}/api/profile`, formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUser(response.data);

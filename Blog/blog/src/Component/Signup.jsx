@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export default function Signup() {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const navigate = useNavigate();
   const [form, setForm] = useState({
     username: '',
@@ -66,7 +67,7 @@ export default function Signup() {
     if (Object.keys(newErrors).length > 0) return;
 
     try {
-      await axios.post('http://localhost:5000/api/auth/signup', form);
+      await axios.post(`${API_URL}/api/auth/signup`, form);
       alert('Signup successful! You can log in now.');
       navigate('/login');
     } catch (err) {
@@ -81,7 +82,6 @@ export default function Signup() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden">
       <div className="absolute inset-0 z-0">
-        {/* Background moving stars or particles */}
         <div className="w-full h-full animate-pulse bg-gradient-to-br from-gray-800/20 to-gray-900/20 blur-2xl"></div>
       </div>
 

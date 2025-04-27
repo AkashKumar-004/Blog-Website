@@ -45,11 +45,11 @@ const Blog = ({ setShowForm }) => {
   const [errors, setErrors] = useState({});
   const [tags, setTags] = useState('');
   const navigate = useNavigate();
-
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/profile', {
+        const response = await axios.get(`${API_URL}/api/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -71,7 +71,7 @@ const Blog = ({ setShowForm }) => {
     if (e.target.value.length >= 5) {
       setLoadingTags(true);
       try {
-        const response = await axios.post('http://localhost:5000/api/ai/generate-tags', {
+        const response = await axios.post(`${API_URL}/api/ai/generate-tags`, {
           content: e.target.value,
         });
         setSuggestedTags(response.data.tags || []);
@@ -128,7 +128,7 @@ const Blog = ({ setShowForm }) => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        timeout: 40000, // Timeout set to 40 seconds
+        timeout: 40000,
       };
   
       const blogData = {
@@ -143,7 +143,7 @@ const Blog = ({ setShowForm }) => {
   
       console.log('Posting blog with data:', blogData);
   
-      const response = await axios.post('http://localhost:5000/api/blogs', blogData, config);
+      const response = await axios.post(`${API_URL}/api/blogs`, blogData, config);
   
       if (response.status === 200) {
         setMessage('✅ Blog posted successfully!');
@@ -183,7 +183,7 @@ const Blog = ({ setShowForm }) => {
     setMessage('');
 
     try {
-      const response = await axios.post('http://localhost:5000/api/ai/generate-summary', {
+      const response = await axios.post(`${API_URL}/api/ai/generate-summary`, {
         content,
       });
 

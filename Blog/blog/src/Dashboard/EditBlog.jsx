@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 const EditBlog = () => {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const { id } = useParams(); 
   const token = useSelector((state) => state.user.token); 
   const username = useSelector((state) => state.user.user.username); 
@@ -20,7 +21,7 @@ const EditBlog = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/blogs/${id}`);
+        const res = await axios.get(`${API_URL}/api/blogs/${id}`);
         setBlogData({
           title: res.data.title,
           content: res.data.content,
@@ -58,7 +59,7 @@ const EditBlog = () => {
     };
 
     try {
-      await axios.put(`http://localhost:5000/api/blogs/${id}`, updatedBlogData, {
+      await axios.put(`${API_URL}/api/blogs/${id}`, updatedBlogData, {
         headers: { Authorization: `Bearer ${token}` }, 
       });
       alert('Blog updated successfully!');

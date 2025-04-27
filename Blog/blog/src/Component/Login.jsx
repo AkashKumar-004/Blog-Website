@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../Redux/userSlice';
 import { useNavigate } from 'react-router-dom';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';  // Make sure to import the icons
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; 
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -14,7 +14,7 @@ export default function Login() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const isValidPassword = (password) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/.test(password);
 
@@ -39,7 +39,7 @@ export default function Login() {
 
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const res = await axios.post(`${API_URL}/api/auth/login`, { email, password });
       dispatch(setUser({ token: res.data.token, user: res.data.user }));
       localStorage.setItem('token', res.data.token);
       navigate('/');

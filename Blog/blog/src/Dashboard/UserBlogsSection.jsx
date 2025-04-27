@@ -8,11 +8,11 @@ const UserBlogsSection = () => {
   const [loading, setLoading] = useState(true);
   const token = useSelector((state) => state.user.token);
   const username = useSelector((state) => state.user.user.username);
-
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/blogs');
+        const response = await axios.get(`${API_URL}/api/blogs`);
         const userBlogs = response.data.filter((blog) => blog.username === username);
         setBlogs(userBlogs);
       } catch (error) {
@@ -29,7 +29,7 @@ const UserBlogsSection = () => {
 
   const handleDelete = async (blogId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/blogs/${blogId}`, {
+      await axios.delete(`${API_URL}/api/blogs/${blogId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBlogs(blogs.filter((blog) => blog._id !== blogId));
@@ -56,7 +56,7 @@ const UserBlogsSection = () => {
               <p className="text-gray-300 mb-4 whitespace-pre-wrap">{blog.content}</p>
 
               <div className="flex gap-4">
-                {/* Link to EditBlog page */}
+               
                 <Link
                   to={`/blogs/edit/${blog._id}`}
                   className="px-5 py-2 bg-teal-500 text-white rounded-lg shadow-md transition duration-300 hover:bg-teal-600"

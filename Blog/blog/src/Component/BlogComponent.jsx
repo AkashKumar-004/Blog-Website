@@ -2,16 +2,13 @@ import React, { useState } from 'react';
 import axios from 'axios';  
 
 const BlogComponent = () => {
-  // Step 1: Initialize state for blog content and summary
   const [blogContent, setBlogContent] = useState('');  
   const [summary, setSummary] = useState(''); 
-
-  // Step 2: Function to handle content changes (e.g., when the user types)
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const handleContentChange = (e) => {
     setBlogContent(e.target.value); 
   };
 
-  // Step 3: Function to generate the summary by making an API call
   const handleGenerateSummary = async () => {
     if (!blogContent) {
       alert('Content is required to generate a summary');
@@ -19,7 +16,7 @@ const BlogComponent = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/ai/generate-summary', {
+      const response = await axios.post(`${API_URL}/api/ai/generate-summary`, {
         content: blogContent
       });
       const generatedSummary = response.data.summary;
