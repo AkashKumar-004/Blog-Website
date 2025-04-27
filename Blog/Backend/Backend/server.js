@@ -6,8 +6,17 @@ require('dotenv').config();
 // Initialize the Express app
 const app = express();
 
+// CORS configuration
+const corsOptions = {
+  origin: 'https://blog-website-dun-gamma.vercel.app', // Your Vercel frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+// Apply CORS middleware with the configuration
+app.use(cors(corsOptions));
+
 // Middleware
-app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use('/uploads', express.static('uploads'));
 
@@ -20,7 +29,8 @@ const blogRoutes = require('./Routes/blogRoute');
 const profileRoutes = require('./Routes/profileRoutes');
 const dashboardRoutes = require('./Routes/dashboardroute');
 
-app.use('/api/ai', aiRoutes); // Mount the aiRoutes at /api/ai
+// Use routes in the Express app
+app.use('/api/ai', aiRoutes); 
 app.use('/api/auth', authRoutes);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/profile', profileRoutes);
@@ -32,4 +42,4 @@ mongoose.connect(process.env.MONGO_URI)
     console.log('MongoDB connected');
     app.listen(5000, () => console.log('Server running on port 5000'));
   })
-  .catch(err => console.error(err));
+  .catch(err => console.error('MongoDB connection error:', err));
