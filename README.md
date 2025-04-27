@@ -12,10 +12,15 @@ npm install
 
 # Set up environment variables
 cp .env.example .env
+
 # Fill the .env file with your configuration
 MONGO_URI=MONGO DB_URL
+
 JWT_SECRET=your_secret_key_here
+
 HUGGINGFACE_API_KEY=your_API_KRY_Here
+
+
 # Start the development server
 npm run dev
 
