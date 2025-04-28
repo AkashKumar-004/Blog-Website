@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 const EditBlog = () => {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const API_URL = import.meta.env.VITE_API_URL;
   const { id } = useParams(); 
   const token = useSelector((state) => state.user.token); 
   const username = useSelector((state) => state.user.user.username); 

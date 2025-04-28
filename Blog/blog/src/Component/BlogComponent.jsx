@@ -4,7 +4,7 @@ import axios from 'axios';
 const BlogComponent = () => {
   const [blogContent, setBlogContent] = useState('');  
   const [summary, setSummary] = useState(''); 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const API_URL = import.meta.env.VITE_API_URL;
   const handleContentChange = (e) => {
     setBlogContent(e.target.value); 
   };

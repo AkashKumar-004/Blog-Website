@@ -45,7 +45,7 @@ const Blog = ({ setShowForm }) => {
   const [errors, setErrors] = useState({});
   const [tags, setTags] = useState('');
   const navigate = useNavigate();
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const API_URL = import.meta.env.VITE_API_URL;
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {

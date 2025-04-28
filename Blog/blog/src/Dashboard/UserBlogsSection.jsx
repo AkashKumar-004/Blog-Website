@@ -8,7 +8,7 @@ const UserBlogsSection = () => {
   const [loading, setLoading] = useState(true);
   const token = useSelector((state) => state.user.token);
   const username = useSelector((state) => state.user.user.username);
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const API_URL = import.meta.env.VITE_API_URL;
   useEffect(() => {
     const fetchBlogs = async () => {
       try {

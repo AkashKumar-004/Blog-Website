@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export default function Signup() {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const [form, setForm] = useState({
     username: '',
