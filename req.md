@@ -13,3 +13,5 @@ https://blog-website-g55g.onrender.com
 
 # vercel
 https://blog-website-qpvpgjsvg-akash-kumar-ss-projects.vercel.app/
+ # Flow and Architecture Diagrams
+ [Architecture_and_Flow_Diagrams.pdf](https://github.com/user-attachments/files/19935471/Architecture_and_Flow_Diagrams.pdf)
