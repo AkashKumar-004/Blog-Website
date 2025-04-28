@@ -3,14 +3,11 @@ const router = express.Router();
 const { createBlog, getRecommendations, updateBlog, deleteBlog } = require('../Controller/blogController');
 const verifyToken = require('../Routes/middleware/verifyToken');
 const Blog=require('../Model/blogSchema')
-const { generateContentVector } = require('../services/generateVector'); 
-// Create a blog (protected)
+
 router.post('/', verifyToken, createBlog);
 
-// Get blog recommendations (based on AI similarity)
 router.get('/recommendations', getRecommendations);
 
-// Get all blogs
 router.get('/', async (req, res) => {
   try {
     const blogs = await Blog.find();
@@ -21,7 +18,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get a specific blog by ID
 router.get('/:id', async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id);
@@ -35,7 +31,6 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Add like to a blog
 router.post('/:id/like', verifyToken, async (req, res) => {
   const { id } = req.params;
   try {
@@ -60,10 +55,8 @@ router.post('/:id/like', verifyToken, async (req, res) => {
   }
 });
 
-// Update a blog (protected)
 router.put('/:id', verifyToken, updateBlog);
 
-// Delete a blog (protected)
 router.delete('/:id', verifyToken, deleteBlog);
 
 module.exports = router;

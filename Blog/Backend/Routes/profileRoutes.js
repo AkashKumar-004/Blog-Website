@@ -1,11 +1,11 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
 const profileController = require('../Controller/profileController');
-const verifyToken = require('../Routes/middleware/verifyToken'); // Token verification middleware
+const verifyToken = require('../Routes/middleware/verifyToken'); 
 
 const router = express.Router();
 
-router.get('/', verifyToken, profileController.getProfile);  // This would match `/api/profile`
+router.get('/', verifyToken, profileController.getProfile);  
 
 router.put(
   '/',

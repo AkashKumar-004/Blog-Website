@@ -4,7 +4,7 @@ const axios = require('axios');
 const generateContentVector = async (content) => {
   try {
     const response = await axios.post(
-      'https://api-inference.huggingface.co/embeddings',  // or your specific endpoint
+      'https://api-inference.huggingface.co/embeddings', 
       { inputs: content },
       {
         headers: {
@@ -13,7 +13,7 @@ const generateContentVector = async (content) => {
       }
     );
 
-    const embedding = response.data.embedding;  // depends on Hugging Face model format
+    const embedding = response.data.embedding;  
     return embedding;
   } catch (error) {
     console.error('Error generating content vector:', error.response?.data || error.message);
