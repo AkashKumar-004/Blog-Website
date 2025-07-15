@@ -5,7 +5,6 @@ require('dotenv').config();
 
 const app = express();
 
-// ✅ Only ONE cors configuration
 // app.use(cors({
 //   origin: 'https://blog-website-dun-gamma.vercel.app',
 //   credentials: true
@@ -28,9 +27,11 @@ app.use('/api/blogs', blogRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
+const Port=process.env.PORT||5001; 
+app.listen(Port, () => console.log(`Server running on port ${Port}`));
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('MongoDB connected');
-    app.listen(5000, () => console.log('Server running on port 5000'));
   })
   .catch(err => console.error(err));
