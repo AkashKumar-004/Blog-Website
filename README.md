@@ -38,7 +38,7 @@ npm run dev
 cd ../backend
 npm install
 cp .env.example .env
-# Inside .env, include:
+Inside .env, include:
 MONGO_URI=<Your MongoDB connection URI>
 JWT_SECRET=<Your JWT secret>
 GOOGLE_API_KEY=<Your GOOGLE API key>
