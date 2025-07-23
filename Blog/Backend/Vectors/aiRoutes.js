@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { generateSummary } = require('../Controller/aiController');
 
+const { generateBlogImage, generateSummary, generateContent } = require('../Controller/aiController'); // Adjust the path
+
+router.post('/generate-image', generateBlogImage);
 router.post('/generate-summary', generateSummary);
+router.post('/generate-content', generateContent);
 
 module.exports = router;
