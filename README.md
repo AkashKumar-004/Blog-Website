@@ -31,7 +31,7 @@ cd blog/blog
 npm install
 cp .env.example .env
 # Edit .env:
-# VITE_API_URL=http:Your URL
+# VITE_API_URL=http:"Your URL"
 npm run dev
 
 ### 3. Backend Setup
@@ -39,10 +39,10 @@ cd ../backend
 npm install
 cp .env.example .env
 # Inside .env, include:
-# MONGO_URI=<Your MongoDB connection URI>
-# JWT_SECRET=<Your JWT secret>
-# GOOGLE_API_KEY=<Your GOOGLE API key>
-# PORT=5000
+MONGO_URI=<Your MongoDB connection URI>
+JWT_SECRET=<Your JWT secret>
+GOOGLE_API_KEY=<Your GOOGLE API key>
+PORT=<Your Port Number>
 npm run dev
 
 ### 4. Features
