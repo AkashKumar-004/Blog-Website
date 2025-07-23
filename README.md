@@ -23,37 +23,34 @@ A full-stack blog platform featuring AI-powered summarization and AI-powered con
 
 ### 1. Clone the repo
 bash
-git clone https://github.com/AkashKumar-004/Blog-Website.git
-cd Blog
+- git clone https://github.com/AkashKumar-004/Blog-Website.git
+- cd Blog
 
 ### 2. FrontEnd Setup
-cd blog/blog
-npm install
-cp .env.example .env
+- cd blog/blog
+- npm install
+- cp .env.example .env
 # Edit .env:
-# VITE_API_URL=http:"Your URL"
-npm run dev
+- VITE_API_URL=http:"Your URL"
+- npm run dev
 
 ### 3. Backend Setup
-cd ../backend
-npm install
-cp .env.example .env
-Inside .env, include:
+- cd ../backend
+- npm install
+- cp .env.example .env
+### Inside .env, include:
 - MONGO_URI=<Your MongoDB connection URI>
 - JWT_SECRET=<Your JWT secret>
 - GOOGLE_API_KEY=<Your GOOGLE API key>
 - PORT=<Your Port Number>
+
 - npm run dev
 
 ### 4. Features
-User registration + JWT-based authentication
-
-Create, edit, delete blog posts
-
-Auto-generated summarization & tags via Hugging Face
-
-AI-powered idea assistance via ChatGPT
-
-Clean, responsive UI
+- User registration + JWT-based authentication
+- Create, edit, delete blog posts
+- Auto-generated summarization ,content generation & image Generaton via GenAi from Gemini Google
+- AI-powered idea assistance via ChatGPT
+- Clean, responsive UI
 
 
