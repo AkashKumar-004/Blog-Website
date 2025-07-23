@@ -30,7 +30,7 @@ bash
 - cd blog/blog
 - npm install
 - cp .env.example .env
-# Edit .env:
+### Edit .env:
 - VITE_API_URL=http:"Your URL"
 - npm run dev
 
@@ -44,6 +44,7 @@ bash
 - GOOGLE_API_KEY=<Your GOOGLE API key>
 - PORT=<Your Port Number>
 
+### Build Run Commend
 - npm run dev
 
 ### 4. Features
