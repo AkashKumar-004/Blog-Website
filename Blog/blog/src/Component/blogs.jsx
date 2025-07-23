@@ -1,286 +1,214 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; 
-const InputField = ({ label, value, onChange, placeholder, error, textarea, rows = 3 }) => {
-  const baseClass =
-    'w-full p-4 rounded-lg border border-gray-300 bg-gray-800 text-gray-200 shadow-md transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 hover:border-indigo-400 hover:shadow-xl hover:ring-indigo-300';
 
-  return (
-    <div>
-      <label className="block text-sm font-semibold text-gray-300 mb-2">{label}</label>
-      {textarea ? (
-        <textarea
-          placeholder={placeholder}
-          className={`${baseClass} resize-none`}
-          rows={rows}
-          value={value}
-          onChange={onChange}
-        />
-      ) : (
-        <input
-          type="text"
-          placeholder={placeholder}
-          className={baseClass}
-          value={value}
-          onChange={onChange}
-        />
-      )}
-      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+const AIField = ({ label, value, onChange, onGenerate, loading, placeholder }) => (
+  <div>
+    <label className="block text-sm font-semibold text-gray-300 mb-2">{label}</label>
+    <div className="flex gap-2">
+      <textarea
+        className="flex-1 p-4 rounded-lg border bg-gray-800 text-gray-200"
+        rows={4}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+      />
+      <button
+        onClick={onGenerate}
+        disabled={loading}
+        className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg h-fit"
+      >
+        {loading ? 'Generating...' : `Generate ${label}`}
+      </button>
     </div>
-  );
-};
+  </div>
+);
 
-const Blog = ({ setShowForm }) => {
-  const [loadingSummary, setLoadingSummary] = useState(false);
-  const [username, setUsername] = useState('');
+const Blog = () => {
   const { token, role } = useSelector((state) => state.user);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [tags, setTags] = useState('');
   const [category, setCategory] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const [detailedSummary, setDetailedSummary] = useState('');
-  const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({});
-  const [tags, setTags] = useState('');
-  const navigate = useNavigate();
+  const [summary, setSummary] = useState('');
+
+  const [loadingContent, setLoadingContent] = useState(false);
+  const [loadingTags, setLoadingTags] = useState(false);
+  const [loadingImage, setLoadingImage] = useState(false);
+  const [loadingSummary, setLoadingSummary] = useState(false);
+  const [loadingSubmit, setLoadingSubmit] = useState(false); // Track submit button loading
+
   const API_URL = import.meta.env.VITE_API_URL;
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/api/profile`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setUsername(response.data.username);
-      } catch (err) {
-        console.error('Error fetching profile:', err);
-        setMessage('❌ Failed to fetch user profile.');
-      }
-    };
 
-    if (token) {
-      fetchUserProfile();
-    }
-  }, [token]);
-
-  const handleTagChange = async (e) => {
-    setTags(e.target.value);
-    if (e.target.value.length >= 5) {
-      setLoadingTags(true);
-      try {
-        const response = await axios.post(`${API_URL}/api/ai/generate-tags`, {
-          content: e.target.value,
-        });
-        setSuggestedTags(response.data.tags || []);
-      } catch (err) {
-        console.error('Error fetching tag suggestions:', err);
-        setSuggestedTags([]);
-      } finally {
-        setLoadingTags(false);
-      }
-    } else {
-      setSuggestedTags([]);
-    }
-  };
-
-  const validateForm = () => {
-    const errors = {};
-    if (!title) errors.title = 'Title is required';
-    else if (title.length < 5) errors.title = 'Title must be at least 5 characters';
-
-    if (!content) errors.content = 'Content is required';
-    else if (content.length < 20) errors.content = 'Content must be at least 20 characters';
-
-    if (!tags) errors.tags = 'Tags are required';
-
-    if (!category) errors.category = 'Category is required';
-
-    if (!imageUrl) errors.imageUrl = 'Image URL is required';
-    else if (!/^https?:\/\/[\w.-]+(?:\.[\w\.-]+)+(?:[\/\w\.-]*)*\/?$/.test(imageUrl)) {
-      errors.imageUrl = 'Invalid URL format';
-    }
-
-    if (!detailedSummary) errors.detailedSummary = 'Detailed summary is required';
-    else if (detailedSummary.length < 10) errors.detailedSummary = 'Summary must be at least 10 characters';
-
-    return errors;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage('');
-    setErrors({});
-  
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      setLoading(false);
-      return;
-    }
-  
+  const generateContent = async () => {
+    setLoadingContent(true);
     try {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        timeout: 40000,
-      };
-  
-      const blogData = {
-        title,
-        content,
-        tags: tags.split(',').map((tag) => tag.trim()),
-        category,
-        imageUrl,
-        detailedSummary,
-        username,
-      };
-  
-      console.log('Posting blog with data:', blogData);
-  
-      const response = await axios.post(`${API_URL}/api/blogs`, blogData, config);
-  
-      if (response.status === 200) {
-        setMessage('✅ Blog posted successfully!');
-        setTitle('');
-        setContent('');
-        setTags('');
-        setCategory('');
-        setImageUrl('');
-        setDetailedSummary('');
-        setErrors({});
-      } else {
-        setMessage('✅ Blog posted successfully!');
-      }
+      const res = await axios.post(`${API_URL}/api/ai/generate-content`, { title });
+      setContent(res.data.content || '');
     } catch (err) {
-      console.error('Error creating blog:', err);
-      if (err.response) {
-        console.error('Error response:', err.response);
-        setMessage(`❌ ${err.response.data.message || err.response.data.error || 'An unknown error occurred.'}`);
-      } else if (err.code === 'ECONNABORTED') {
-        setMessage('❌ The request timed out. Please try again later.');
-      } else {
-        setMessage('❌ An unexpected error occurred.');
-      }
+      console.error(err);
     } finally {
-      setLoading(false);
+      setLoadingContent(false);
     }
   };
-  
-  
-  const handleGenerateSummary = async () => {
-    if (!content || content.length < 200) {
-      setMessage('🛑 Please provide more detailed content (at least 200 characters) to generate a summary.');
-      return;
-    }
 
-    setLoadingSummary(true);
-    setMessage('');
-
+  const generateImage = async () => {
+    setLoadingImage(true);
     try {
-      const response = await axios.post(`${API_URL}/api/ai/generate-summary`, {
-        content,
-      });
+      const res = await axios.post(`${API_URL}/api/ai/generate-image`, { title, content });
+      setImageUrl(res.data.imageUrl || '');
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingImage(false);
+    }
+  };
 
-      const generatedSummary = response.data.summary;
-      setDetailedSummary(generatedSummary);
-    } catch (error) {
-      console.error('Error generating summary:', error);
-      setMessage('❌ Failed to generate summary. Try again later.');
+  const generateSummary = async () => {
+    setLoadingSummary(true);
+    try {
+      const res = await axios.post(`${API_URL}/api/ai/generate-summary`, { content });
+      setSummary(res.data.summary || '');
+    } catch (err) {
+      console.error(err);
     } finally {
       setLoadingSummary(false);
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Disable submit button and show loading state
+    setLoadingSubmit(true);
+
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      };
+      const body = {
+        title,
+        content,
+        category,
+        tags: tags.split(',').map((t) => t.trim()),
+        imageUrl,
+        detailedSummary: summary,
+      };
+
+      await axios.post(`${API_URL}/api/blogs`, body, config);
+      alert('✅ Blog submitted successfully!');
+    } catch (err) {
+      console.error(err);
+      alert('❌ Blog submission failed.');
+    } finally {
+      // Re-enable submit button after response
+      setLoadingSubmit(false);
+    }
+  };
+
   if (!token || role !== 'creator') {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <p className="text-lg text-red-500 font-semibold">🚫 You must be logged in as a creator to write a blog.</p>
-      </div>
+      <div className="text-red-500 text-center mt-10">🚫 Only creators can write blogs.</div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-gray-900 via-gray-800 to-black flex items-center justify-center py-12 px-4">
-      <div className="max-w-3xl w-full bg-gray-900 bg-opacity-80 rounded-2xl shadow-2xl p-8 space-y-6 backdrop-blur-md">
-      <button
-        onClick={() => navigate('/')}
-        className="absolute top-6 left-6 flex items-center space-x-2 bg-gray-800 text-gray-200 px-4 py-2 rounded-full shadow-lg hover:bg-gray-700 transition-all duration-300 animate-pulse"
-      >
-        <span className="text-xl">←</span>
-        <span className="font-semibold">Home</span>
-      </button>
-        <div className="text-center">
-          <h2 className="text-4xl font-bold text-gray-200 mb-4">📝 New Blog Post</h2>
-          <p className="text-sm text-gray-400 mb-6">Craft your thoughts. Inspire the world.</p>
+    <div className="min-h-screen bg-black text-white px-6 py-12 flex items-center justify-center">
+      <form onSubmit={handleSubmit} className="max-w-2xl w-full space-y-6 bg-gray-900 p-8 rounded-2xl shadow-xl">
+        <h1 className="text-3xl font-bold text-center">🤖 AI Blog Writer</h1>
+
+        <div>
+          <label className="block text-sm font-semibold text-gray-300 mb-2">Title</label>
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Enter blog title"
+            className="w-full p-4 rounded-lg border bg-gray-800 text-gray-200"
+            required
+          />
         </div>
 
-        {message && (
-          <div className={`text-center text-sm font-medium ${message.includes('✅') ? 'text-green-500' : 'text-red-500'}`}>
-            {message}
-          </div>
-        )}
+        <AIField
+          label="Content"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          onGenerate={generateContent}
+          loading={loadingContent}
+          placeholder="Click to generate content using AI"
+          required
+        />
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <InputField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Blog title" error={errors.title} />
-          <InputField label="Content" value={content} onChange={(e) => setContent(e.target.value)} placeholder="Blog content..." textarea rows={6} error={errors.content} />
-          
-          <div className="flex space-x-4">
-            <div className="flex-1">
-              <label className="block text-sm font-semibold text-gray-300 mb-2">Tags</label>
+        <div className="flex gap-4">
+          <div className="flex-1">
+            <label className="block text-sm font-semibold text-gray-300 mb-2">Category</label>
+            <input
+              type="text"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full p-4 rounded-lg border bg-gray-800 text-gray-200"
+              required
+            />
+          </div>
+
+          <div className="flex-1">
+            <label className="block text-sm font-semibold text-gray-300 mb-2">Tags</label>
+            <div className="flex gap-2">
               <input
                 type="text"
                 value={tags}
-                onChange={handleTagChange}
-                className="w-full p-4 rounded-lg border border-gray-300 bg-gray-800 text-gray-200 shadow-md transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 hover:border-indigo-400 hover:shadow-xl hover:ring-indigo-300"
-                placeholder="Enter tags (comma separated)"
+                onChange={(e) => setTags(e.target.value)}
+                className="flex-1 p-4 rounded-lg border bg-gray-800 text-gray-200"
+                required
               />
-              {errors.tags && <p className="text-red-500 text-sm mt-1">{errors.tags}</p>}
             </div>
-
-            <InputField label="Category" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Blog category" error={errors.category} />
           </div>
+        </div>
 
-          <InputField label="Image URL" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="Image URL" error={errors.imageUrl} />
-
-          <div className="flex justify-between items-center space-x-4">
-            <div className="flex-1">
-              <label className="block text-sm font-semibold text-gray-300 mb-2">Detailed Summary</label>
-              <textarea
-                value={detailedSummary}
-                onChange={(e) => setDetailedSummary(e.target.value)}
-                className="w-full p-4 rounded-lg border border-gray-300 bg-gray-800 text-gray-200 shadow-md resize-none transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 hover:border-indigo-400 hover:shadow-xl hover:ring-indigo-300"
-                rows={4}
-                placeholder="Enter a brief summary"
-              />
-              {errors.detailedSummary && <p className="text-red-500 text-sm mt-1">{errors.detailedSummary}</p>}
-            </div>
+        <div>
+          <label className="block text-sm font-semibold text-gray-300 mb-2">Image URL</label>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+              className="flex-1 p-4 rounded-lg border bg-gray-800 text-gray-200"
+              placeholder="Auto-generated image"
+              required
+            />
             <button
               type="button"
-              onClick={handleGenerateSummary}
-              disabled={loadingSummary}
-              className="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-all duration-300 text-sm"
+              onClick={generateImage}
+              className="bg-indigo-600 px-4 py-2 rounded-lg text-sm hover:bg-indigo-700"
+              disabled={loadingImage}
             >
-              {loadingSummary ? 'Generating...' : 'Generate AI Summary'}
+              {loadingImage ? '...' : 'AI'}
             </button>
           </div>
+        </div>
 
-          <div className="flex justify-center space-x-4">
-            <button
-              type="submit"
-              className="w-full bg-indigo-600 text-white py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300"
-              disabled={loading}
-            >
-              {loading ? 'Posting...' : 'Post Blog'}
-            </button>
-          </div>
-        </form>
-      </div>
+        <AIField
+          label="Summary"
+          value={summary}
+          onChange={(e) => setSummary(e.target.value)}
+          onGenerate={generateSummary}
+          loading={loadingSummary}
+          placeholder="Click to generate summary from content"
+          required
+        />
+
+        <button
+          type="submit"
+          className="w-full py-4 bg-green-600 hover:bg-green-700 rounded-xl text-white text-lg font-semibold transition"
+          disabled={loadingSubmit}
+        >
+          {loadingSubmit ? 'Submitting...' : 'Post Blog 🚀'}
+        </button>
+      </form>
     </div>
   );
 };
