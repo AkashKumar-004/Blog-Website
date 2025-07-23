@@ -39,11 +39,11 @@ cd ../backend
 npm install
 cp .env.example .env
 Inside .env, include:
-MONGO_URI=<Your MongoDB connection URI>
-JWT_SECRET=<Your JWT secret>
-GOOGLE_API_KEY=<Your GOOGLE API key>
-PORT=<Your Port Number>
-npm run dev
+- MONGO_URI=<Your MongoDB connection URI>
+- JWT_SECRET=<Your JWT secret>
+- GOOGLE_API_KEY=<Your GOOGLE API key>
+- PORT=<Your Port Number>
+- npm run dev
 
 ### 4. Features
 User registration + JWT-based authentication
