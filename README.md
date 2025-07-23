@@ -25,6 +25,8 @@ A full-stack blog platform featuring AI-powered summarization and AI-powered con
 bash
 - git clone https://github.com/AkashKumar-004/Blog-Website.git
 - cd Blog
+ 
+---
 
 ### 2. FrontEnd Setup
 - cd blog/blog
@@ -33,6 +35,8 @@ bash
 ### Edit .env:
 - VITE_API_URL=http:"Your URL"
 - npm run dev
+  
+---
 
 ### 3. Backend Setup
 - cd ../backend
@@ -44,11 +48,14 @@ bash
 - GOOGLE_API_KEY="Your GOOGLE API key"
 - PORT="Your Port Number"
 
-### 4. Build Run Commend
-- npm run dev
 ---
 
-### 4. Features
+### 4. Build Run Commend
+- npm run dev
+
+---
+
+## Features
 - User registration + JWT-based authentication
 - Create, edit, delete blog posts
 - Auto-generated summarization ,content generation & image Generaton via GenAi from Gemini Google
