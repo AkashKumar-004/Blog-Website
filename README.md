@@ -1,35 +1,59 @@
-# Navigate into the directory for Frontend
+# 📚 Blog Website
+
+A full-stack blog platform featuring AI-powered summarization and AI-powered content generation and AI-powered Image generation. Built with a React front‑end, Node.js/Express back‑end, MongoDB, and Google Gemini-API integrations.
+
+---
+
+## 🔗 Live Demo  
+[View it here →](https://blog-website-pi-plum.vercel.app/)
+
+---
+
+## 🚀 Tech Stack
+
+- **Frontend**: React, Vite, Tailwind CSS (or your chosen styling)
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB
+- **Authentication**: JWT
+- **AI Integrations**:
+  - **Google Gemini-API** – Content summarization & Summary Generation and Image Generation.
+---
+
+## 🛠️ Quick Start
+
+### 1. Clone the repo
+bash
+git clone https://github.com/AkashKumar-004/Blog-Website.git
+cd Blog
+
+### 2. FrontEnd Setup
 cd blog/blog
-# Navigate into the directory for Frontend
-cd blog/backend
-
-# Install dependencies
 npm install
-#--install the necessary dependencies
-
-# Set up environment variables
 cp .env.example .env
-
-# Fill the .env file with your configuration for Backend
-MONGO_URI=MONGO DB_URL
-
-JWT_SECRET=your_secret_key_here
-
-HUGGINGFACE_API_KEY=your_API_KRY_Here
-
-PORT = YOUR_PORT
-
-# Fill the .env file with your configuration for FrontEnd
- VITE_API_URL = Your_Backend_URL
-
-# Start the development server
+# Edit .env:
+# VITE_API_URL=http:Your URL
 npm run dev
 
-Check Out The Live Page 
+### 3. Backend Setup
+cd ../backend
+npm install
+cp .env.example .env
+# Inside .env, include:
+# MONGO_URI=<Your MongoDB connection URI>
+# JWT_SECRET=<Your JWT secret>
+# GOOGLE_API_KEY=<Your GOOGLE API key>
+# PORT=5000
+npm run dev
 
-https://blog-website-pi-plum.vercel.app/
+### 4. Features
+User registration + JWT-based authentication
 
-#AI Tools Used
-Tool :	Purpose
-Hugging Face :	Content Summarization & Tag Suggestions
-ChatGPT	Idea : generation and error debugging
+Create, edit, delete blog posts
+
+Auto-generated summarization & tags via Hugging Face
+
+AI-powered idea assistance via ChatGPT
+
+Clean, responsive UI
+
+
