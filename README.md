@@ -39,13 +39,14 @@ bash
 - npm install
 - cp .env.example .env
 ### Inside .env, include:
-- MONGO_URI=<Your MongoDB connection URI>
-- JWT_SECRET=<Your JWT secret>
-- GOOGLE_API_KEY=<Your GOOGLE API key>
-- PORT=<Your Port Number>
+- MONGO_URI= "Your MongoDB connection URI"
+- JWT_SECRET="Your JWT secret"
+- GOOGLE_API_KEY="Your GOOGLE API key"
+- PORT="Your Port Number"
 
-### Build Run Commend
+### 4. Build Run Commend
 - npm run dev
+---
 
 ### 4. Features
 - User registration + JWT-based authentication
@@ -53,5 +54,6 @@ bash
 - Auto-generated summarization ,content generation & image Generaton via GenAi from Gemini Google
 - AI-powered idea assistance via ChatGPT
 - Clean, responsive UI
+---
 
 
