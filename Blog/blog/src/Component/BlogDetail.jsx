@@ -55,65 +55,80 @@ const BlogDetail = () => {
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#0f0c29] via-[#302b63] to-[#24243e] flex justify-center items-center relative px-4">
 
-     
-      <div className="absolute top-6 left-6">
-        <button
-          onClick={() => navigate('/')}
-          className="px-5 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:scale-105 text-white rounded-xl shadow-lg font-semibold transition-transform duration-300"
-        >
-          ← Back to Home
-        </button>
-      </div>
+  <div className="absolute top-6 left-6">
+    <button
+      onClick={() => navigate('/')}
+      className="px-5 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:scale-105 hover:shadow-[0_0_12px_2px_rgba(139,92,246,0.6)] text-white rounded-xl shadow-lg font-semibold transition-all duration-300"
+    >
+      ← Back to Home
+    </button>
+  </div>
 
-      <div className="max-w-3xl w-full bg-[#1e1e2f] p-10 rounded-2xl shadow-2xl animate-fadeIn">
-        <h1 className="text-5xl font-extrabold text-center text-white mb-8 tracking-wide animate-fadeIn">{blog.title}</h1>
+  <div className="max-w-3xl w-full bg-[#1e1e2f] p-10 rounded-2xl shadow-2xl animate-fadeIn text-white border border-zinc-700 backdrop-blur-md">
+    <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-8 tracking-tight animate-fadeIn">
+      {blog.title}
+    </h1>
 
-        <div className="relative">
-          <img
-            src={blog.imageUrl || 'https://via.placeholder.com/500'}
-            alt={blog.title}
-            className="w-full h-80 object-cover rounded-xl shadow-lg transform transition duration-500 animate-fadeIn"
-          />
-        </div>
-
-        <div className="mt-6 text-lg text-gray-300 leading-relaxed mb-8 animate-fadeIn">{blog.content}</div>
-
-        <div className="text-gray-500 text-sm mb-6">
-          <p>Category: <span className="text-gray-300 font-semibold">{blog.category}</span></p>
-          <p>Tags: <span className="text-gray-400">{blog.tags.join(', ')}</span></p>
-        </div>
-
-        <div className="flex items-center justify-between animate-fadeIn">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={handleLike}
-              disabled={liked}
-              className={`flex items-center text-lg ${liked ? 'text-gray-500' : 'text-purple-500'} transition-all duration-300`}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
-                  2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 
-                  14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 
-                  11.54L12 21.35z"
-                />
-              </svg>
-              {liked ? 'Liked' : 'Like'}
-            </button>
-            <span className="ml-2 text-gray-400 text-lg">{likes} {likes === 1 ? 'like' : 'likes'}</span>
-          </div>
-
-          <button
-            onClick={handleShare}
-            className="flex items-center text-lg text-green-400 hover:scale-105 transition-all duration-300"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
-              <path d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-            Share
-          </button>
-        </div>
-      </div>
+    <div className="relative">
+      <img
+        src={blog.imageUrl || 'https://via.placeholder.com/500'}
+        alt={blog.title}
+        className="w-full h-80 object-cover rounded-xl shadow-lg transition duration-500 hover:shadow-[0_0_20px_4px_rgba(255,255,255,0.1)]"
+      />
     </div>
+
+    <div className="mt-6 text-lg text-gray-300 leading-relaxed mb-8 whitespace-pre-wrap animate-fadeIn">
+      {blog.content}
+    </div>
+
+    <div className="text-sm text-gray-400 mb-6 space-y-1">
+      <p>
+        <span className="text-gray-500">Category:</span>{' '}
+        <span className="text-blue-400 font-semibold">{blog.category}</span>
+      </p>
+      <p>
+        <span className="text-gray-500">Tags:</span>{' '}
+        <span className="text-teal-300">{blog.tags.join(', ')}</span>
+      </p>
+    </div>
+
+    <div className="flex items-center justify-between animate-fadeIn">
+      <div className="flex items-center gap-4">
+        <button
+          onClick={handleLike}
+          disabled={liked}
+          className={`flex items-center text-lg font-medium transition-all duration-300 ${
+            liked
+              ? 'text-gray-500 cursor-not-allowed'
+              : 'text-pink-400 hover:scale-105 hover:shadow-[0_0_8px_2px_rgba(255,105,180,0.4)]'
+          }`}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
+              2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 
+              14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 
+              11.54L12 21.35z"
+            />
+          </svg>
+          {liked ? 'Liked' : 'Like'}
+        </button>
+        <span className="ml-2 text-gray-400 text-lg">
+          {likes} {likes === 1 ? 'like' : 'likes'}
+        </span>
+      </div>
+
+      <button
+        onClick={handleShare}
+        className="flex items-center text-lg text-green-400 hover:scale-105 hover:shadow-[0_0_10px_2px_rgba(34,197,94,0.5)] transition-all duration-300"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+        Share
+      </button>
+    </div>
+  </div>
+</div>
   );
 };
 
