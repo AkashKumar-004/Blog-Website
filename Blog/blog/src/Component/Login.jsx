@@ -54,7 +54,7 @@ export default function Login() {
   const nav = () => navigate('/signup');
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] p-6">
+    <div className="min-h-screen flex items-center justify-center  bg-gradient-to-br from-black via-gray-900 to-black p-6">
       <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl shadow-2xl p-10 w-full max-w-md transform transition-all hover:scale-105 hover:rotate-[1deg] hover:shadow-3xl">
         <h2 className="text-4xl font-extrabold text-center text-white mb-8 drop-shadow-md tracking-wide">
           Welcome Back
